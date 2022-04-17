@@ -24,7 +24,8 @@
   "homepage": "https://github.com/LiubovRukhlina/Budget-Tracker-API#readme",
   "dependencies": {
     "config": "^3.3.7",
-    "fastify": "^3.28.0"
+    "fastify": "^3.28.0",
+    "fastify-cors": "^6.0.3"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
