@@ -21,13 +21,13 @@ export const getExpenseHandler = (req, reply) => {
   return reply.send(expense);
 };
 
-export const addExpenseHandler = (req, reply) => {
+export const addExpenseHandler = async (req, reply) => {
   const { name, cost } = req.body;
 
   const id = expenses.length + 1;
   expenses.push({ id, name, cost });
 
-  reply.send("Expense added");
+  return { id };
 };
 
 export const updateExpenseHandler = (req, reply) => {

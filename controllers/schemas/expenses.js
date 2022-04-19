@@ -37,7 +37,9 @@ export const addExpenseSchema = {
     },
   },
   response: {
-    200: typeString,
+    200: {
+      id: { type: "number" },
+    },
   },
 };
 

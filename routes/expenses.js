@@ -13,6 +13,8 @@ import {
   deleteExpenseHandler,
 } from "../controllers/handlers/expenses.js";
 
+import { verifyToken } from "../controllers/auth/userAuth.js";
+
 const getExpensesOpts = {
   schema: getExpensesSchema,
   handler: getExpensesHandler,
@@ -44,6 +46,9 @@ const expenseRoutes = async (fastify, options, done) => {
   fastify.post("/api/expenses/new", addExpenseOpts);
   fastify.put("/api/expenses/edit/:id", updateExpenseOpts);
   fastify.delete("/api/expenses/:id", deleteExpenseOpts);
+  //   fastify
+  //     .register(require("fastify-auth"))
+  //     .after(() => privateExpenseRoutes(fastify));
 };
 
 export default expenseRoutes;

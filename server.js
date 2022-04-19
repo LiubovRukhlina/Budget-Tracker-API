@@ -2,6 +2,7 @@ import Fastify from "fastify";
 import fastifyCors from "fastify-cors";
 
 import expenseRoutes from "./routes/expenses.js";
+import { userRoutes } from "./routes/users.js";
 
 const PORT = process.env.PORT || 5000;
 
@@ -16,6 +17,7 @@ fastify.register(fastifyCors, (instance) => (req, callback) => {
 });
 
 fastify.register(expenseRoutes);
+fastify.register(userRoutes);
 
 const start = async () => {
   try {
