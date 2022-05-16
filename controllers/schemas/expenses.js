@@ -9,7 +9,16 @@ const expense = {
   },
 };
 
+const headerSchema = {
+  type: "object",
+  required: ["token"],
+  properties: {
+    token: typeString,
+  },
+};
+
 export const getExpensesSchema = {
+  headers: headerSchema,
   response: {
     200: {
       type: "array",
@@ -19,6 +28,7 @@ export const getExpensesSchema = {
 };
 
 export const getExpenseSchema = {
+  headers: headerSchema,
   params: {
     id: { type: "number" },
   },
@@ -28,6 +38,7 @@ export const getExpenseSchema = {
 };
 
 export const addExpenseSchema = {
+  headers: headerSchema,
   body: {
     type: "object",
     required: ["name", "cost"],
@@ -44,6 +55,7 @@ export const addExpenseSchema = {
 };
 
 export const updateExpenseSchema = {
+  headers: headerSchema,
   body: {
     type: "object",
     required: ["name", "cost"],
@@ -61,6 +73,7 @@ export const updateExpenseSchema = {
 };
 
 export const deleteExpenseSchema = {
+  headers: headerSchema,
   params: {
     id: { type: "number" },
   },

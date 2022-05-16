@@ -34,9 +34,9 @@ export const registerUserSchema = {
 export const loginUserSchema = {
   body: {
     type: "object",
-    required: ["username", "password"],
+    required: ["email", "password"],
     properties: {
-      username: typeString,
+      email: typeString,
       password: typeString,
     },
   },
