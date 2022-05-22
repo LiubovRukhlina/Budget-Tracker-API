@@ -1,4 +1,3 @@
-import { users } from "../../cloud/users.js";
 import jwt from "jsonwebtoken";
 
 export const getUsersHandler = (req, reply) => {
@@ -20,12 +19,12 @@ export const registerUserHandler = (req, reply) => {
 };
 
 export const loginUserHandler = async (req, reply) => {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
+  const users = this.mongo.db.collection("Users");
 
   try {
-    const user = users.find(
-      ({ username: _username }) => username === _username
-    ); // await Users.findOne({ username }); // assumming we used mongodb
+    //const user = users.find(({ email: _email }) => email === _email);
+    const user = await users.findOne({ email }); // assumming we used mongodb
 
     if (!user) {
       return reply.send("This user doesn't exist");
@@ -39,7 +38,7 @@ export const loginUserHandler = async (req, reply) => {
     // sign a token
     jwt.sign(
       { id: user.id },
-      "my_jwt_secret",
+      "secret_string",
       { expiresIn: 3 * 86400 },
       (err, token) => {
         if (err) throw err;

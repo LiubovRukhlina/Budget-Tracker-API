@@ -3,13 +3,37 @@ const typeString = { type: "string" };
 const expense = {
   type: "object",
   properties: {
-    id: { type: "number" },
+    _id: { type: "string" },
     name: { type: "string" },
     cost: { type: "number" },
+    userID: { type: "string" },
+    category: { type: "string" },
+  },
+};
+
+const headerSchema = {
+  type: "object",
+  required: ["token"],
+  properties: {
+    token: typeString,
   },
 };
 
 export const getExpensesSchema = {
+  headers: headerSchema,
+  response: {
+    200: {
+      type: "array",
+      items: expense,
+    },
+  },
+};
+
+export const getUserExpensesSchema = {
+  headers: headerSchema,
+  params: {
+    userID: { type: "string" },
+  },
   response: {
     200: {
       type: "array",
@@ -19,18 +43,20 @@ export const getExpensesSchema = {
 };
 
 export const getExpenseSchema = {
+  headers: headerSchema,
   params: {
-    id: { type: "number" },
+    id: { type: "string" },
   },
   response: {
     200: expense,
   },
 };
-
+//TODO: add category
 export const addExpenseSchema = {
+  headers: headerSchema,
   body: {
     type: "object",
-    required: ["name", "cost"],
+    required: ["name", "cost", "category"],
     properties: {
       name: typeString,
       cost: { type: "number" },
@@ -38,22 +64,23 @@ export const addExpenseSchema = {
   },
   response: {
     200: {
-      id: { type: "number" },
+      id: { type: "string" },
     },
   },
 };
-
+//TODO: add category
 export const updateExpenseSchema = {
+  headers: headerSchema,
   body: {
     type: "object",
-    required: ["name", "cost"],
+    required: ["name", "cost", "category"],
     properties: {
       name: typeString,
       cost: { type: "number" },
     },
   },
   params: {
-    id: { type: "number" },
+    id: { type: "string" },
   },
   response: {
     200: typeString,
@@ -61,8 +88,9 @@ export const updateExpenseSchema = {
 };
 
 export const deleteExpenseSchema = {
+  headers: headerSchema,
   params: {
-    id: { type: "number" },
+    id: { type: "string" },
   },
   response: {
     200: typeString,

@@ -13,42 +13,67 @@ import {
   deleteExpenseHandler,
 } from "../controllers/handlers/expenses.js";
 
+import {
+  getExpenses,
+  getExpense,
+  addExpense,
+  updateExpense,
+  deleteExpense,
+} from "../controllers/handlers/mongo_expenses.js";
+
 import { verifyToken } from "../controllers/auth/userAuth.js";
+import fastifyAuth from "fastify-auth";
 
 const getExpensesOpts = {
   schema: getExpensesSchema,
-  handler: getExpensesHandler,
+  handler: getExpenses,
 };
 
 const getExpenseOpts = {
   schema: getExpenseSchema,
-  handler: getExpenseHandler,
+  handler: getExpense,
 };
 
 const addExpenseOpts = {
   schema: addExpenseSchema,
-  handler: addExpenseHandler,
+  handler: addExpense,
 };
 
 const updateExpenseOpts = {
   schema: updateExpenseSchema,
-  handler: updateExpenseHandler,
+  handler: updateExpense,
 };
 
 const deleteExpenseOpts = {
   schema: deleteExpenseSchema,
-  handler: deleteExpenseHandler,
+  handler: deleteExpense,
 };
 
 const expenseRoutes = async (fastify, options, done) => {
-  fastify.get("/api/expenses", getExpensesOpts);
-  fastify.get("/api/expenses/:id", getExpenseOpts);
-  fastify.post("/api/expenses/new", addExpenseOpts);
-  fastify.put("/api/expenses/edit/:id", updateExpenseOpts);
-  fastify.delete("/api/expenses/:id", deleteExpenseOpts);
-  //   fastify
-  //     .register(require("fastify-auth"))
-  //     .after(() => privateExpenseRoutes(fastify));
+  fastify.register(fastifyAuth).after(() => privateExpenseRoutes(fastify));
+};
+
+const privateExpenseRoutes = (fastify) => {
+  fastify.get("/api/expenses", {
+    preHandler: fastify.auth([verifyToken]),
+    ...getExpensesOpts,
+  });
+  fastify.get("/api/expenses/:id", {
+    preHandler: fastify.auth([verifyToken]),
+    ...getExpenseOpts,
+  });
+  fastify.post("/api/expenses/new", {
+    preHandler: fastify.auth([verifyToken]),
+    ...addExpenseOpts,
+  });
+  fastify.put("/api/expenses/edit/:id", {
+    preHandler: fastify.auth([verifyToken]),
+    ...updateExpenseOpts,
+  });
+  fastify.delete("/api/expenses/:id", {
+    preHandler: fastify.auth([verifyToken]),
+    ...deleteExpenseOpts,
+  });
 };
 
 export default expenseRoutes;
