@@ -1,16 +1,22 @@
 import jwt from "jsonwebtoken";
-export const verifyToken = (req, reply, done) => {
+import { ObjectId } from "mongodb";
+export function verifyToken(req, reply, done) {
   const { token } = req.headers;
 
-  jwt.verify(token, "secret_string", (err, decoded) => {
-    if (err) {
+  jwt.verify(token, "secret_string", async (err, decoded) => {
+    if (err || !decoded?.id) {
       done(new Error("Unauthorized"));
     }
 
-    req.user = {
-      id: decoded.id,
-    };
-  });
+    const userID = new ObjectId(decoded.id);
+    const users = this.mongo.db.collection("Users");
 
-  done();
-};
+    const checkedUser = await users.findOne({ _id: userID });
+    console.log(checkedUser);
+    if (!checkedUser) {
+      done(new Error("Unauthorized"));
+    }
+    req.user = checkedUser;
+    done();
+  });
+}

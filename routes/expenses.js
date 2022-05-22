@@ -13,32 +13,40 @@ import {
   deleteExpenseHandler,
 } from "../controllers/handlers/expenses.js";
 
+import {
+  getExpenses,
+  getExpense,
+  addExpense,
+  updateExpense,
+  deleteExpense,
+} from "../controllers/handlers/mongo_expenses.js";
+
 import { verifyToken } from "../controllers/auth/userAuth.js";
 import fastifyAuth from "fastify-auth";
 
 const getExpensesOpts = {
   schema: getExpensesSchema,
-  handler: getExpensesHandler,
+  handler: getExpenses,
 };
 
 const getExpenseOpts = {
   schema: getExpenseSchema,
-  handler: getExpenseHandler,
+  handler: getExpense,
 };
 
 const addExpenseOpts = {
   schema: addExpenseSchema,
-  handler: addExpenseHandler,
+  handler: addExpense,
 };
 
 const updateExpenseOpts = {
   schema: updateExpenseSchema,
-  handler: updateExpenseHandler,
+  handler: updateExpense,
 };
 
 const deleteExpenseOpts = {
   schema: deleteExpenseSchema,
-  handler: deleteExpenseHandler,
+  handler: deleteExpense,
 };
 
 const expenseRoutes = async (fastify, options, done) => {

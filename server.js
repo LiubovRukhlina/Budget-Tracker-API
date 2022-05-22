@@ -1,9 +1,11 @@
 import Fastify from "fastify";
 import fastifyCors from "fastify-cors";
 import fastifySwagger from "fastify-swagger";
+import fastifyMongodb from "@fastify/mongodb";
 
 import expenseRoutes from "./routes/expenses.js";
 import { userRoutes } from "./routes/users.js";
+import "dotenv/config";
 
 const PORT = process.env.PORT || 5000;
 
@@ -26,6 +28,11 @@ fastify.register(fastifySwagger, {
   swagger: {
     info: { title: "budget-tracker-api" },
   },
+});
+
+fastify.register(fastifyMongodb, {
+  forceClose: true,
+  url: process.env.CONNECT_DB,
 });
 
 const start = async () => {
